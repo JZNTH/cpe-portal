@@ -1,0 +1,30 @@
+name: CpE Portal CI
+
+# 1. Define when this pipeline should run
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# 2. Define what jobs to run
+jobs:
+  lint-php:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step A: Download your repository code onto the cloud server
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step B: Set up PHP on the cloud runner
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+
+    # Step C: Automatically lint/syntax-check every single PHP file in your project
+    - name: Check PHP Syntax
+      run: |
+        echo "Scanning PHP files for syntax errors..."
+        find . -name "*.php" -print0 | xargs -0 -n 1 php -l
